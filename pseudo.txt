@@ -1,0 +1,32 @@
+Website opens
+
+display large animated button to start the game
+
+start timer for first question.
+-See if you can get the text to show up one character at a time.
+
+show question and answer options
+
+The player clicks an answer or time runs out
+
+clock stops
+
+check if it is the correct answer or wrong answer
+
+if it is correct then show a congradulations
+    increase score by 1
+    show an image for the correct answer
+
+if time ran out let the user know and display correct answer
+    increase wrong answers by 1
+    show an image for the correct answer
+
+if time ran out let the user know and display correct answer
+    increase wrong answers by 1
+    show an image for the correct answer
+
+after a few seconds show another question.
+
+Once all questions have been answered, show a a final screen
+    final screen displays correct answers, wrong answers, and 
+    an option to restart the game without reloading the page.
