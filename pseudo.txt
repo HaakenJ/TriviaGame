@@ -1,3 +1,10 @@
+Ideas: Add animations with Anime.js
+    add icons with font-awesome
+
+
+
+
+
 Website opens
 
 display large animated button to start the game

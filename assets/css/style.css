@@ -10,11 +10,13 @@
 
 body {
     background-image: url("../images/background.png");
+    overflow-y: hidden;
 }
 
 .main-container {
     background-color: #3C8D2F;
-    margin-top: 50px;
+    position: relative;
+    top: 60px;
     height: 700px;
     box-shadow: 4px 5px 10px #333;
 }
