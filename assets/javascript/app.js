@@ -32,5 +32,5 @@ let gameQuestions = {
 }
 
 $(document).ready(function() {
-    $("#start-button").show();
+    // $("#start-button").show();
 });
