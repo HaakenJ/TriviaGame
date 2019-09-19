@@ -2,6 +2,49 @@ Website opens
 
 display large animated button to start the game
 
+when the start button is clicked
+
+    choose a random question from questions object
+
+    display the question with answers in random order
+
+    start timer for the question
+    
+    when a user clicks an answer
+
+        Stop the timer
+
+        check if 'this' is the correct answer
+
+        if it is the right answer,
+            display 'That's right'
+            display image for the question
+            increment 'Correct answers'
+            wait a few seconds before starting new question.
+        If it is wrong,
+            display  "Nope wrong answer"
+            display the correct answer
+            display image for question
+            increment 'Incorrect answers'
+            wait a few seconds before starting new question
+    
+    If the timer runs out
+        tell the user they ran out of time
+        display the correct answer
+        display image for question
+        increment 'Unanswered'
+        wait a few seconds before starting new question
+
+    When the last question has ended
+        
+        display 'All done, here's how you did!'
+        display correct answers
+        display incorrect answers
+        display Unanswered
+
+        display 'Start Over?' button
+
+
 start timer for first question.
 -See if you can get the text to show up one character at a time.
 
@@ -30,3 +73,9 @@ after a few seconds show another question.
 Once all questions have been answered, show a a final screen
     final screen displays correct answers, wrong answers, and 
     an option to restart the game without reloading the page.
+
+
+
+TODO:
+    - Get questions and answers together
+
