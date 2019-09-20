@@ -1,33 +1,45 @@
 let gameQuestions = {
     question1: {
-        question: "What is the most prominent mountain in the lower 48 states of the USA?",
-        answer: "Mount Rainier",
-        wrongAnswers: ["Denali","Mount Whitney","Mount Shasta"]
+        question: 'What is the most prominent mountain in the lower 48 states of the USA?',
+        answer: 'Mount Rainier',
+        wrongAnswers: ['Denali','Mount Whitney','Mount Shasta'],
+        funFact: 'In topography, prominence measures the height of a mountain\'s summit relative to the lowest contour line encircling it but containing no higher summit within it. This honor belongs to the PNW\'s own Mt. Rainier!',
+        image: '<img href="../images/rainier.png" alt="Mt Rainier from the Puget Sound.">'
     },
     question2: {
-        question: "Who was the first person to free climb The Nose route of El Capitan?",
-        answer: "Lynn Hill",
-        wrongAnswers: ["Warren Harding", "Alex Honnold", "Royal Robbins"]
+        question: 'Who was the first person to free climb The Nose route of El Capitan?',
+        answer: 'Lynn Hill',
+        wrongAnswers: ['Warren Harding', 'Alex Honnold', 'Royal Robbins'],
+        funFact: 'In 1994 Lynn Hill was the first person to climb The Nose without aid equipment. One year later, she then became the first person to climb it in a day!',
+        image: '<img href="../images/lynn.png" alt="Lynn Hill rock climbing in the 1990\'s">'
     },
     question3: {
-        question: "What is the difference between Sport and Traditional rock climbing?",
-        answer: "In traditional climbing all fall protection is placed by the climber.",
-        wrongAnswers: ["Unlike traditional, Sport climbing is done just for fun.","Traditional climbing is done only with hemp ropes and pitons.", "Traditional climbing is just so pure and in touch with nature, man"]
+        question: 'What is the difference between Sport and Traditional rock climbing?',
+        answer: 'In traditional climbing all fall protection is placed by the climber.',
+        wrongAnswers: ['Unlike traditional, Sport climbing is done just for fun.','Traditional climbing is done only with hemp ropes and pitons.', 'Traditional climbing is just so pure and in touch with nature, man'],
+        funFact: 'In traditional or \'trad\' climbing, a climber must put their own fall protection into cracks in a wall so that if they fall the rope will catch them.  In sport climbing there are bolts in the walls, this isn\'t allowed at many climbing areas.',
+        image: '<img href="../images/trad.jpg" alt="A person placing climbing protection into a wall.">'
     },
     question4: {
-        question: "In what country did skiing originate?",
-        answer: "Norway",
-        wrongAnswers: ["Swedan", "Switzerland", "Zimbabwe"]
+        question: 'In what country did skiing originate?',
+        answer: 'Norway',
+        wrongAnswers: ['Germany', 'Switzerland', 'Zimbabwe'],
+        funFact: 'An image of a skier holding a single pole or an ax with both hands, is found in Rødøy in the Nordland region of Norway.  Carvings like this tell us that people have been skiing in the area since at least 3000 or 4000 BCE!',
+        image: '<img href="../images/ski-carving.png" alt="A Norwegian carving of a skier.">'
     },
     question5: {
-        question: "Who is largely credited for inventing snowboarding?",
-        answer: "Jake Burton",
-        wrongAnswers: ["Terje Haakonsen", "Steve Jobs", "Sherman Poppen"]
+        question: 'Who is largely credited for inventing snowboarding?',
+        answer: 'Jake Burton',
+        wrongAnswers: ['Terje Haakonsen', 'Steve Jobs', 'Sherman Poppen'],
+        funFact: 'Although a toy called the Snurfer had already existed, Jake Burton was the first person to add rigid bindings and a laminate core to a board and hence is credited as making the first snowboard!',
+        image: '<img href="../images/burton.png" alt="Jake Burton with a snowboard on his back.">'
     },
     question6: {
-        question: "What would you use a cam for?",
-        answer: "Protecting yourself from a fall while rock climbing.",
-        wrongAnswers: ["To tighten your ski boots.", "To ascend a rope.", "As a guy to toss you a brewski."]
+        question: 'What would you use a cam for?',
+        answer: 'Protecting yourself from a fall while rock climbing.',
+        wrongAnswers: ['To tighten your ski boots.', 'To ascend a rope.', 'To tie your shoe.'],
+        funFact: 'A cam, or spring-loaded camming device, is a piece of rock climbing protection that can be placed into a crack to secure the rope.  Unlike a piton, these devices can be easily removed after use.  They distribute roughly twice as much force outward and is exerted on them by a fallen climber and thus stop the fall!',
+        image: '<img href="../images/cam.png" alt="A spring-loaded camming device placed in a crack.">'
     },
 }
 
@@ -39,6 +51,7 @@ let usedQuestions = [],
     incorrectAnswers = 0,
     unanswered = 0;
 
+
 // FUNCTIONS
 
 function randomQuesNumber () {
@@ -46,7 +59,7 @@ function randomQuesNumber () {
 }
 
 function chooseRanAnsSelctor () {
-    return $("#answer-" + Math.floor((Math.random() * 4) + 1));
+    return $('#answer-' + Math.floor((Math.random() * 4) + 1));
 }
 
 function questionTimer () {
@@ -54,7 +67,7 @@ function questionTimer () {
 }
 
 function getRandomQuestion (randomNum, obj) {
-    return obj["question" + randomNum];
+    return obj['question' + randomNum];
 }
 
 function pickAndPlayQuestion () {
@@ -95,25 +108,23 @@ function pickAndPlayQuestion () {
         currentWrongAnswer.text(currentQuestion.wrongAnswers[i]);
     }
 
+    // Animate the choices into the viewframe.
+    choicesAnime.play();
+
     $(".choices").on('click', function() {
         if ($(this).text() === currentQuestion.answer) {
             $('li').hide();
             $('#question').hide();
-            $('#result').show().text('That\'s Right!');
+            $('#result').show().text('That\'s right! ' + '<br>' + currentQuestion.funFact);
             $('#next-button').show();
         } else {
             $('li').hide();
             $('#question').hide();
-            $('#result').show().text('Nope, wrong answer! The correct answer was: ' + currentQuestion.answer);
+            $('#result').show().text('Nope, wrong answer! ' + '<br>' +  currentQuestion.funFact);
             $('#next-button').show();
         }
     })
 }
-
-
-
-
-
 
 
 // ANIMATIONS
@@ -129,16 +140,25 @@ anime({
 });
 
 anime({
-    targets: 'h1#header',
+    targets: '#header',
     translateX: -3000,
     translateY: -1000,
     duration: 2000,
     delay: 500
 });
 
-
-
-
+let choicesAnime = anime({
+    targets: ".choices",
+    translateX: {
+        value: 1000,
+        duration: 800
+    },
+    opacity: '1',
+    delay: function (element, iter, totTargets) {
+        return iter * 400
+    },
+    autoplay: false
+})
 
 
 // GAMEPLAY
@@ -148,11 +168,13 @@ $(document).ready(function () {
     $('li').hide();
     $('#result').hide();
     $('#next-button').hide();
+    $('#image').text('<img href="../images/opening-page.png" alt="Mt Shucksan">');
 })
 
 
 $('#start-button').on('click', function() {
-    $("#start-button").hide();
+    $('#start-button').hide();
+    $('#image').hide();
     pickAndPlayQuestion();
 });
 $('#next-button').on('click', function() {

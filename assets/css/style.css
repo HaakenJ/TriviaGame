@@ -73,7 +73,8 @@ body {
 }
 #result {
     position: relative;
-    top: 20px;
+    top: 10px;
+    font-size: 1em;
 }
 
 #next-button {
@@ -112,6 +113,9 @@ li {
     text-align: left;
     font-size: 1.5em;
     font-weight: bold;
+    position: relative;
+    right: 1000px;
+    opacity: 0;
 }
 @media screen and (max-width: 991px) {
     li {
