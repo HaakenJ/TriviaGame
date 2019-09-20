@@ -10,18 +10,21 @@
 
 body {
     background-image: url("../images/background.png");
-    overflow-y: hidden;
+    overflow: hidden;
 }
 
 .main-container {
     background-color: #3C8D2F;
     position: relative;
-    top: 60px;
+    top: 1000px;
     height: 700px;
     box-shadow: 4px 5px 10px #333;
 }
 
 #header {
+    position: relative;
+    right: -3000px;
+    top: 1000px;
     margin-top: 30px;
     font-size: 5em;
     text-shadow: 2px 2px 8px #333;
@@ -73,8 +76,9 @@ ul {
 }
 
 li {
-    margin: 20px 0;
-    font-size: 1.5em;
+    margin: 5px 0;
+    text-align: left;
+    font-size: 1.2em;
     font-weight: bold;
 }
 

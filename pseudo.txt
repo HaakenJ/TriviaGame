@@ -14,6 +14,9 @@ when the start button is clicked
     choose a random question from questions object
 
     display the question with answers in random order
+        Get a random question and display the question in the #question div.
+        Display the answer from that question in one of the #answer divs randomly chosen
+        Display the wrong answers in the remaining #answer divs
 
     start timer for the question
     
