@@ -31,10 +31,13 @@ let gameQuestions = {
     },
 }
 
+// Variables
 
-
-
-
+let usedQuestions = [],
+    totalQuestions = 0,
+    correctAnswers = 0,
+    incorrectAnswers = 0,
+    unanswered = 0;
 
 // FUNCTIONS
 
@@ -50,20 +53,36 @@ function questionTimer () {
     let timer = setTimeout(function (){/*TODO choose what happens when you run of out time.*/}, 30000);
 }
 
-function getRandomQuestion (randomNum) {
-    return gameQuestions["question" + randomNum];
+function getRandomQuestion (randomNum, obj) {
+    return obj["question" + randomNum];
 }
 
 function pickAndPlayQuestion () {
+    totalQuestions++;
+    if (totalQuestions === 7) {
+        return;
+    }
     $("li").show();
+    // Remove existing text from the .choices divs.
+    $('.choices').text('');
+    // Remove existing text from the #question div.
+    $('#question').text('');
     // Assign a random question object.
-    let currentQuestion = getRandomQuestion(randomQuesNumber());
+    let currentQuestion = getRandomQuestion(randomQuesNumber(), gameQuestions);
+    // Reassign a random question until a new question is chosen.
+    while (usedQuestions.includes(currentQuestion.question)) {
+        currentQuestion = getRandomQuestion(randomQuesNumber(), gameQuestions);
+    }
+    // Assign to usedQuestions so the same Q isn't used twice.
+    usedQuestions.push(currentQuestion.question);
     // Get the selector of a random list item to display the answer.
     let rightAnswerSelctor = chooseRanAnsSelctor();
     // Display the current question.
+    $('#question').show();
     $("#question").text(currentQuestion.question);
     // Display the correct answer.
     rightAnswerSelctor.text(currentQuestion.answer);
+    
     // Loop through the wrong answers array.
     for (i = 0; i < currentQuestion.wrongAnswers.length; i++) {
         // Assign random answer selector to the currentWrongAnswer.
@@ -78,9 +97,15 @@ function pickAndPlayQuestion () {
 
     $(".choices").on('click', function() {
         if ($(this).text() === currentQuestion.answer) {
-            console.log('That\'s Right!');
+            $('li').hide();
+            $('#question').hide();
+            $('#result').show().text('That\'s Right!');
+            $('#next-button').show();
         } else {
-            console.log('Wrong answer');
+            $('li').hide();
+            $('#question').hide();
+            $('#result').show().text('Nope, wrong answer! The correct answer was: ' + currentQuestion.answer);
+            $('#next-button').show();
         }
     })
 }
@@ -120,13 +145,21 @@ anime({
 
 
 $(document).ready(function () {
-    $("#start-button").show();
-    $("li").hide();
+    $('li').hide();
+    $('#result').hide();
+    $('#next-button').hide();
 })
 
 
-$("#start-button").on('click', function() {
+$('#start-button').on('click', function() {
     $("#start-button").hide();
-    pickAndDisplayQuestion();
+    pickAndPlayQuestion();
 });
+$('#next-button').on('click', function() {
+    $('#result').hide();
+    $('#next-button').hide();
+    pickAndPlayQuestion();
+});
+
+
 
