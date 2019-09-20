@@ -11,8 +11,8 @@ let gameQuestions = {
     },
     question3: {
         question: "What is the difference between Sport and Traditional rock climbing?",
-        answer: "Sport climbing has fixed protection in the wall.",
-        wrongAnswers: ["Sport climbing is done just for fun.","Traditional climbing is done only with hemp ropes and pitons.", "Traditional climbing is just so pure and in touch with nature, man"]
+        answer: "In traditional climbing all fall protection is placed by the climber.",
+        wrongAnswers: ["Unlike traditional, Sport climbing is done just for fun.","Traditional climbing is done only with hemp ropes and pitons.", "Traditional climbing is just so pure and in touch with nature, man"]
     },
     question4: {
         question: "In what country did skiing originate?",
@@ -29,17 +29,19 @@ let gameQuestions = {
         answer: "Protecting yourself from a fall while rock climbing.",
         wrongAnswers: ["To tighten your ski boots.", "To ascend a rope.", "As a guy to toss you a brewski."]
     },
-
-
-
-    
-
-
 }
+
+
+
+
+
+
+// FUNCTIONS
 
 function randomQuesNumber () {
     return Math.floor((Math.random() * 6) + 1);
 }
+
 function chooseRanAnsSelctor () {
     return $("#answer-" + Math.floor((Math.random() * 4) + 1));
 }
@@ -52,19 +54,16 @@ function getRandomQuestion (randomNum) {
     return gameQuestions["question" + randomNum];
 }
 
-function pickAndDisplayQuestion () {
+function pickAndPlayQuestion () {
+    $("li").show();
     // Assign a random question object.
     let currentQuestion = getRandomQuestion(randomQuesNumber());
-
     // Get the selector of a random list item to display the answer.
     let rightAnswerSelctor = chooseRanAnsSelctor();
-
     // Display the current question.
     $("#question").text(currentQuestion.question);
-
     // Display the correct answer.
     rightAnswerSelctor.text(currentQuestion.answer);
-
     // Loop through the wrong answers array.
     for (i = 0; i < currentQuestion.wrongAnswers.length; i++) {
         // Assign random answer selector to the currentWrongAnswer.
@@ -76,7 +75,23 @@ function pickAndDisplayQuestion () {
         }
         currentWrongAnswer.text(currentQuestion.wrongAnswers[i]);
     }
+
+    $(".choices").on('click', function() {
+        if ($(this).text() === currentQuestion.answer) {
+            console.log('That\'s Right!');
+        } else {
+            console.log('Wrong answer');
+        }
+    })
 }
+
+
+
+
+
+
+
+// ANIMATIONS
 
 
 anime({
@@ -96,6 +111,14 @@ anime({
     delay: 500
 });
 
+
+
+
+
+
+// GAMEPLAY
+
+
 $(document).ready(function () {
     $("#start-button").show();
     $("li").hide();
@@ -104,8 +127,6 @@ $(document).ready(function () {
 
 $("#start-button").on('click', function() {
     $("#start-button").hide();
-    $("li").show();
     pickAndDisplayQuestion();
-
-
 });
+

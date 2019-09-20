@@ -46,7 +46,6 @@ body {
     font-size: 2em;
     width: 85%;
     margin-top: 200px;
-    cursor: pointer;
     box-shadow: 1px 2px #333;
     border-style: none;
     border-radius: 4px;
@@ -58,7 +57,10 @@ body {
 }
 
 #start-button:hover {
-    background-color: rgb(11, 85, 0);
+    cursor: pointer;
+    background-color: #ffffa9;
+    color: #333;
+    border: 2px solid #0A4700;
 }
 
 #start-button:focus {
@@ -81,7 +83,13 @@ li {
     font-size: 1.2em;
     font-weight: bold;
 }
-
 li:hover {
-
+    cursor: pointer;
+    background-color: #ffffa9;
+    color: #333;
+    border: 2px solid #0A4700;
+    border-radius: 4px;
+}
+li:active {
+    transform: translateY(4px);
 }
