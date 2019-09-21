@@ -10,7 +10,7 @@
 
 body {
     background-image: url("../images/background.png");
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .main-container {
@@ -74,6 +74,9 @@ body {
 #result {
     position: relative;
     top: 10px;
+    font-size: 1.2em;
+}
+#fun-fact {
     font-size: 1em;
 }
 
@@ -131,4 +134,8 @@ li:hover {
 }
 li:active {
     transform: translateY(4px);
+}
+img {
+    height: auto;
+    width: 100%;
 }
