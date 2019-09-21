@@ -18,7 +18,7 @@ let gameQuestions = {
         answer: 'In traditional climbing all fall protection is placed by the climber.',
         wrongAnswers: ['Unlike traditional, Sport climbing is done just for fun.','Traditional climbing is done only with hemp ropes and pitons.', 'Traditional climbing is just so pure and in touch with nature, man'],
         funFact: 'In traditional or \'trad\' climbing, a climber must put their own fall protection into cracks in a wall so that if they fall the rope will catch them.  In sport climbing there are bolts in the walls, this isn\'t allowed at many climbing areas.',
-        image: '<img src="assets/images/trad.jpg" alt="A person placing climbing protection into a wall.">'
+        image: '<img src="assets/images/trad.png" alt="A person placing climbing protection into a wall.">'
     },
     question4: {
         question: 'In what country did skiing originate?',
@@ -117,14 +117,14 @@ function pickAndPlayQuestion () {
             $('#question').hide();
             $('#result').show().text('That\'s right!');
             $('#fun-fact').show().text(currentQuestion.funFact)
-            $('#image').show().append(currentQuestion.image);
+            $('#image').text('').show().append(currentQuestion.image);
             $('#next-button').show();
         } else {
             $('li').hide();
             $('#question').hide();
             $('#result').show().text('Nope, wrong answer!');
             $('#fun-fact').show().text(currentQuestion.funFact);
-            $('#image').show().append(currentQuestion.image);
+            $('#image').text('').show().append(currentQuestion.image);
             $('#next-button').show();
         }
     })
@@ -172,7 +172,7 @@ $(document).ready(function () {
     $('li').hide();
     $('#result').hide();
     $('#next-button').hide();
-    $('#image').append('<img src="assets/images/opening-page.png" alt="Mt Shucksan" style="position: relative; top: -60px">');
+    $('#image').append('<img src="assets/images/opening-page.png" alt="Mt Shucksan" style="position: relative; top: -120px; height: auto; width: 100%">');
 })
 
 
