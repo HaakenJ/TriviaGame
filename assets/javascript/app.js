@@ -66,6 +66,13 @@ function questionTimer () {
     let timer = setTimeout(function (){/*TODO choose what happens when you run of out time.*/}, 30000);
 }
 
+function nextQuestion () {
+    $('#result').hide();
+    $('#fun-fact').hide();
+    $('#image').hide().text('');
+    pickAndPlayQuestion();
+}
+
 function getRandomQuestion (randomNum, obj) {
     return obj['question' + randomNum];
 }
@@ -86,7 +93,7 @@ function pickAndPlayQuestion () {
     while (usedQuestions.includes(currentQuestion.question)) {
         currentQuestion = getRandomQuestion(randomQuesNumber(), gameQuestions);
     }
-    // Assign to usedQuestions so the same Q isn't used twice.
+    // Push current Q to usedQuestions so the same Q isn't used twice.
     usedQuestions.push(currentQuestion.question);
     // Get the selector of a random list item to display the answer.
     let rightAnswerSelctor = chooseRanAnsSelctor();
@@ -111,6 +118,7 @@ function pickAndPlayQuestion () {
     // Animate the choices into the viewframe.
     choicesAnime.play();
 
+    // Check if the clicked answer was right or wrong and move to answer page.
     $(".choices").on('click', function() {
         if ($(this).text() === currentQuestion.answer) {
             $('li').hide();
@@ -118,14 +126,16 @@ function pickAndPlayQuestion () {
             $('#result').show().text('That\'s right!');
             $('#fun-fact').show().text(currentQuestion.funFact)
             $('#image').text('').show().append(currentQuestion.image);
-            $('#next-button').show();
+            correctAnswers++;
+            setTimeout(nextQuestion, 3000);
         } else {
             $('li').hide();
             $('#question').hide();
             $('#result').show().text('Nope, wrong answer!');
             $('#fun-fact').show().text(currentQuestion.funFact);
             $('#image').text('').show().append(currentQuestion.image);
-            $('#next-button').show();
+            incorrectAnswers++;
+            setTimeout(nextQuestion, 5000);
         }
     })
 }
@@ -171,8 +181,7 @@ let choicesAnime = anime({
 $(document).ready(function () {
     $('li').hide();
     $('#result').hide();
-    $('#next-button').hide();
-    $('#image').append('<img src="assets/images/opening-page.png" alt="Mt Shucksan" style="position: relative; top: -120px; height: auto; width: 100%">');
+    $('#image').append('<img id="start-image" src="assets/images/opening-page.png" alt="Mt Shucksan" style="position: relative; top: -120px; height: auto; width: 100%">');
 })
 
 
@@ -181,13 +190,7 @@ $('#start-button').on('click', function() {
     $('#image').hide().text('');
     pickAndPlayQuestion();
 });
-$('#next-button').on('click', function() {
-    $('#result').hide();
-    $('#fun-fact').hide();
-    $('#next-button').hide();
-    $('#image').hide().text('');
-    pickAndPlayQuestion();
-});
+
 
 
 

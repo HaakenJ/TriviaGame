@@ -1,6 +1,15 @@
 Ideas: Add animations with Anime.js
     add icons with font-awesome
 
+    TODO:  Add timer to questions.
+
+        Add ending page displaying Wins, Losses, etc.
+
+        Rather than emptying divs with .text('') and showing and hiding divs, 
+        there must be a better way.
+
+        Change fonts
+
 
 
 
