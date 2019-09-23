@@ -46,10 +46,12 @@ let gameQuestions = {
 // Variables
 
 let usedQuestions = [],
+    currentQuestion = '',
     totalQuestions = 0,
     correctAnswers = 0,
     incorrectAnswers = 0,
-    unanswered = 0;
+    unanswered = 0,
+    time = 30;
 
 
 // FUNCTIONS
@@ -62,14 +64,35 @@ function chooseRanAnsSelctor () {
     return $('#answer-' + Math.floor((Math.random() * 4) + 1));
 }
 
-function questionTimer () {
-    let timer = setTimeout(function (){/*TODO choose what happens when you run of out time.*/}, 30000);
+function timerCount () {
+    time--;
+    console.log('timer is running.')
+    $('#timer').text(time);
+    if (time === 0) {
+        $('li').hide();
+        clearInterval(timer);
+        $('#time-span').hide();
+        $('#question').hide();
+        $('#result').show().text('You ran out of time!');
+        $('#fun-fact').show().text(currentQuestion.funFact);
+        $('#image').text('').show().append(currentQuestion.image);
+        unanswered++;
+        setTimeout(nextQuestion, 7000);
+        clearInterval(timer);
+    }
+}
+
+function startTimer () {
+    $('#time-span').show();
+    $('#timer').text('30');
+    timer = setInterval(timerCount, 1000);
 }
 
 function nextQuestion () {
     $('#result').hide();
     $('#fun-fact').hide();
     $('#image').hide().text('');
+    time = 30;
     pickAndPlayQuestion();
 }
 
@@ -82,13 +105,14 @@ function pickAndPlayQuestion () {
     if (totalQuestions === 7) {
         return;
     }
+    startTimer();
     $("li").show();
     // Remove existing text from the .choices divs.
     $('.choices').text('');
     // Remove existing text from the #question div.
     $('#question').text('');
     // Assign a random question object.
-    let currentQuestion = getRandomQuestion(randomQuesNumber(), gameQuestions);
+    currentQuestion = getRandomQuestion(randomQuesNumber(), gameQuestions);
     // Reassign a random question until a new question is chosen.
     while (usedQuestions.includes(currentQuestion.question)) {
         currentQuestion = getRandomQuestion(randomQuesNumber(), gameQuestions);
@@ -116,26 +140,29 @@ function pickAndPlayQuestion () {
     }
 
     // Animate the choices into the viewframe.
-    choicesAnime.play();
+    choicesAnime.play(); 
 
     // Check if the clicked answer was right or wrong and move to answer page.
     $(".choices").on('click', function() {
+        clearInterval(timer);
         if ($(this).text() === currentQuestion.answer) {
             $('li').hide();
+            $('#time-span').hide();
             $('#question').hide();
             $('#result').show().text('That\'s right!');
             $('#fun-fact').show().text(currentQuestion.funFact)
             $('#image').text('').show().append(currentQuestion.image);
             correctAnswers++;
-            setTimeout(nextQuestion, 3000);
+            setTimeout(nextQuestion, 7000);
         } else {
             $('li').hide();
+            $('#time-span').hide();
             $('#question').hide();
             $('#result').show().text('Nope, wrong answer!');
             $('#fun-fact').show().text(currentQuestion.funFact);
             $('#image').text('').show().append(currentQuestion.image);
             incorrectAnswers++;
-            setTimeout(nextQuestion, 5000);
+            setTimeout(nextQuestion, 7000);
         }
     })
 }
@@ -181,6 +208,7 @@ let choicesAnime = anime({
 $(document).ready(function () {
     $('li').hide();
     $('#result').hide();
+    $('#time-span').hide();
     $('#image').append('<img id="start-image" src="assets/images/opening-page.png" alt="Mt Shucksan" style="position: relative; top: -120px; height: auto; width: 100%">');
 })
 
