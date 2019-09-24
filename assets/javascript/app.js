@@ -52,6 +52,7 @@ let usedQuestions = [],
     incorrectAnswers = 0,
     unanswered = 0,
     timerRunning = false,
+    timerId,
     time = 30;
 
 
@@ -94,7 +95,7 @@ function chooseRanAnsSelctor () {
 //     }
 // }
 
-function questionTimer () {
+function timerForEachQuestion () {
     timerId = setTimeout(() => {
         $('li').hide();
         $('#time-span').hide();
@@ -104,7 +105,7 @@ function questionTimer () {
         $('#image').text('').show().append(currentQuestion.image);
         unanswered++;
         setTimeout(nextQuestion, 7000);
-    }, 10 * 1000)
+    }, 4 * 1000)
 }
 
 function nextQuestion () {
@@ -125,7 +126,7 @@ function pickAndPlayQuestion () {
     if (totalQuestions === 7) {
         return;
     }
-    questionTimer();
+    timerForEachQuestion();
     // startTimer();
     $("li").show();
     // Remove existing text from the .choices divs.
@@ -162,34 +163,35 @@ function pickAndPlayQuestion () {
 
     // Animate the choices into the viewframe.
     choicesAnime.play(); 
-
-    // Check if the clicked answer was right or wrong and move to answer page.
-    $(".choices").on('click', function() {
-        clearTimeout(timerId);
-        console.log('Interval stopped');
-        if ($(this).text() === currentQuestion.answer) {
-            $('li').hide();
-            $('#time-span').hide();
-            $('#question').hide();
-            $('#result').show().text('That\'s right!');
-            $('#fun-fact').show().text(currentQuestion.funFact)
-            $('#image').text('').show().append(currentQuestion.image);
-            correctAnswers++;
-            console.log('# of correct ' + correctAnswers);
-            setTimeout(nextQuestion, 7000);
-        } else {
-            $('li').hide();
-            $('#time-span').hide();
-            $('#question').hide();
-            $('#result').show().text('Nope, wrong answer!');
-            $('#fun-fact').show().text(currentQuestion.funFact);
-            $('#image').text('').show().append(currentQuestion.image);
-            incorrectAnswers++;
-            console.log('# of incorrect ' + incorrectAnswers);
-            setTimeout(nextQuestion, 7000);
-        }
-    })
 }
+
+// Check if the clicked answer was right or wrong and move to answer page.
+$(".choices").on('click', function() {
+    clearTimeout(timerId);
+    console.log('Interval stopped');
+    console.log('Timer ID', timerId);
+    if ($(this).text() === currentQuestion.answer) {
+        $('li').hide();
+        $('#time-span').hide();
+        $('#question').hide();
+        $('#result').show().text('That\'s right!');
+        $('#fun-fact').show().text(currentQuestion.funFact)
+        $('#image').text('').show().append(currentQuestion.image);
+        correctAnswers++;
+        console.log('# of correct ' + correctAnswers);
+        setTimeout(nextQuestion, 2000);
+    } else {
+        $('li').hide();
+        $('#time-span').hide();
+        $('#question').hide();
+        $('#result').show().text('Nope, wrong answer!');
+        $('#fun-fact').show().text(currentQuestion.funFact);
+        $('#image').text('').show().append(currentQuestion.image);
+        incorrectAnswers++;
+        console.log('# of incorrect ' + incorrectAnswers);
+        setTimeout(nextQuestion, 2000);
+    }
+});
 
 
 // ANIMATIONS
