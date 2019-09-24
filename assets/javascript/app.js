@@ -31,14 +31,14 @@ let gameQuestions = {
         question: 'Who is largely credited for inventing snowboarding?',
         answer: 'Jake Burton',
         wrongAnswers: ['Terje Haakonsen', 'Steve Jobs', 'Sherman Poppen'],
-        funFact: 'Although a toy called the Snurfer had already existed, Jake Burton was the first person to add rigid bindings and a laminate core to a board and hence is credited as making the first snowboard!',
+        funFact: 'Although a toy called the Snurfer had already existed, Jake Burton was the first person to add rigid bindings and a laminate core to a board and hence is credited for making the first snowboard!',
         image: '<img src="assets/images/burton.png" alt="Jake Burton with a snowboard on his back.">'
     },
     question6: {
         question: 'What would you use a cam for?',
         answer: 'Protecting yourself from a fall while rock climbing.',
         wrongAnswers: ['To tighten your ski boots.', 'To ascend a rope.', 'To tie your shoe.'],
-        funFact: 'A cam, or spring-loaded camming device, is a piece of rock climbing protection that can be placed into a crack to secure the rope.  Unlike a piton, these devices can be easily removed after use.  They distribute roughly twice as much force outward and is exerted on them by a fallen climber and thus stop the fall!',
+        funFact: 'A cam, or spring-loaded camming device, is a piece of rock climbing protection that can be placed into a crack to secure the rope.  Unlike a piton, these devices can be easily removed after use.  They distribute roughly twice as much force outward and is exerted down on them by a fallen climber and thus stop the fall!',
         image: '<img src="assets/images/cam.png" alt="A spring-loaded camming device placed in a crack.">'
     },
 }
@@ -51,50 +51,30 @@ let usedQuestions = [],
     correctAnswers = 0,
     incorrectAnswers = 0,
     unanswered = 0,
-    timerRunning = false,
     timerId,
-    time = 30;
+    displayTimerId,
+    time = 15;
 
 
 // FUNCTIONS
 
+// Picks a random number between 1-6 to use as a question index.
 function randomQuesNumber () {
     return Math.floor((Math.random() * 6) + 1);
 }
 
+// Returns a question when provided a random index number.
+function getRandomQuestion (randomNum, obj) {
+    return obj['question' + randomNum];
+}
+
+/* Returns a selector for one of the four answer list items so that the right
+    and wrong answers are in random locations. */
 function chooseRanAnsSelctor () {
     return $('#answer-' + Math.floor((Math.random() * 4) + 1));
 }
 
-
-// function startTimer () {
-//     $('#time-span').show();
-//     $('#timer').text('30');
-//     console.log('starting the timer.');
-//     time = 30;
-//     if (!timerRunning) {
-//         timerRunning = true;
-//         timerId = setInterval(function() {
-//             if (time > 0) {
-//                 time--;
-//                 console.log('timer is running.')
-//                 $('#timer').text(time);
-//             } else {
-//                 timerRunning = false;
-//                 clearInterval(timerId);
-//                 $('li').hide();
-//                 $('#time-span').hide();
-//                 $('#question').hide();
-//                 $('#result').show().text('You ran out of time!');
-//                 $('#fun-fact').show().text(currentQuestion.funFact);
-//                 $('#image').text('').show().append(currentQuestion.image);
-//                 unanswered++;
-//                 setTimeout(nextQuestion, 7000);
-//             }
-//         }, 1000);
-//     }
-// }
-
+// The actual timer for each question that will end the question.
 function timerForEachQuestion () {
     timerId = setTimeout(() => {
         $('li').hide();
@@ -104,57 +84,82 @@ function timerForEachQuestion () {
         $('#fun-fact').show().text(currentQuestion.funFact);
         $('#image').text('').show().append(currentQuestion.image);
         unanswered++;
-        setTimeout(nextQuestion, 7000);
-    }, 4 * 1000)
+        clearInterval(displayTimerId);
+        setTimeout(nextQuestion, 10 * 1000);
+    }, 15 * 1000)
 }
 
+// Displays how many seconds are left on each question.
+function displayTimer () {
+    $('#time-span').show();
+    displayTimerId = setInterval (() => {
+        time--;
+        $('#timer').text(time);
+    }, 1000);
+}
+
+// Hides divs and images, resets time, and starts a new question.
 function nextQuestion () {
     $('#result').hide();
     $('#fun-fact').hide();
     $('#image').hide().text('');
     console.log('Here comes the next question');
+    time = 15;
     pickAndPlayQuestion();
 }
 
-function getRandomQuestion (randomNum, obj) {
-    return obj['question' + randomNum];
-}
-
+/* The function that will pick questions, start timers, hide and show the 
+    proper divs, display the answers randomly, and end the game when the
+    maximum amount of questions have been reached. */
 function pickAndPlayQuestion () {
-    console.log('Playing a question.');
     totalQuestions++;
+    $('#timer').text('15');
+    console.log('Total questions: ', totalQuestions);
+    // End the game and display the final screen and restart button.
     if (totalQuestions === 7) {
+        $('li').hide();
+        $('#fun-fact').hide();
+        $('#image').hide();
+        $('#time-span').hide();
+        $('#result').show().text('All done, here\s how you did!');
+        $('#scores').empty();
+        $('#scores').show().append('Correct Answers: ', correctAnswers, '<br>');
+        $('#scores').append('Incorrect Answers: ', incorrectAnswers, '<br>');
+        $('#scores').append('Unanswered: ', unanswered);
+        $('#restart-button').show();
         return;
     }
+
+    // Start the timers.
     timerForEachQuestion();
-    // startTimer();
+    displayTimer();
+    
+    // Show and empty proper divs.
     $("li").show();
-    // Remove existing text from the .choices divs.
+    $('#question').show();
     $('.choices').text('');
-    // Remove existing text from the #question div.
     $('#question').text('');
-    // Assign a random question object.
+
+    // Choose and assign a random question object to use this round.
     currentQuestion = getRandomQuestion(randomQuesNumber(), gameQuestions);
-    // Reassign a random question until a new question is chosen.
+    // Reassign the random question until an unused question is chosen.
     while (usedQuestions.includes(currentQuestion.question)) {
         currentQuestion = getRandomQuestion(randomQuesNumber(), gameQuestions);
     }
-    // Push current Q to usedQuestions so the same Q isn't used twice.
+    // Push currentQuestion to usedQuestions so the same Q isn't used twice.
     usedQuestions.push(currentQuestion.question);
-    // Get the selector of a random list item to display the answer.
-    let rightAnswerSelctor = chooseRanAnsSelctor();
     // Display the current question.
-    $('#question').show();
     $("#question").text(currentQuestion.question);
+
+    // Assign the selector of a random answer line for the correct answer.
+    let rightAnswerSelctor = chooseRanAnsSelctor();
     // Display the correct answer.
     rightAnswerSelctor.text(currentQuestion.answer);
     
-    // Loop through the wrong answers array.
+    /* Loop through the wrong answers array and continue to reassign random
+        selectors until each empty line is filled. */
     for (i = 0; i < currentQuestion.wrongAnswers.length; i++) {
-        // Assign random answer selector to the currentWrongAnswer.
         let currentWrongAnswer = chooseRanAnsSelctor();
-        /* Continue to reassign the random selector until it chooses an empty
-            answer div. */
         while (!currentWrongAnswer.is(':empty')) {
             currentWrongAnswer = chooseRanAnsSelctor();
         }
@@ -165,9 +170,11 @@ function pickAndPlayQuestion () {
     choicesAnime.play(); 
 }
 
-// Check if the clicked answer was right or wrong and move to answer page.
+/* When an answer is clicked, stop the timers, check if the answer is correct
+    or not, and display the results screen. */
 $(".choices").on('click', function() {
     clearTimeout(timerId);
+    clearInterval(displayTimerId);
     console.log('Interval stopped');
     console.log('Timer ID', timerId);
     if ($(this).text() === currentQuestion.answer) {
@@ -179,7 +186,7 @@ $(".choices").on('click', function() {
         $('#image').text('').show().append(currentQuestion.image);
         correctAnswers++;
         console.log('# of correct ' + correctAnswers);
-        setTimeout(nextQuestion, 2000);
+        setTimeout(nextQuestion, 10 * 1000);
     } else {
         $('li').hide();
         $('#time-span').hide();
@@ -189,13 +196,12 @@ $(".choices").on('click', function() {
         $('#image').text('').show().append(currentQuestion.image);
         incorrectAnswers++;
         console.log('# of incorrect ' + incorrectAnswers);
-        setTimeout(nextQuestion, 2000);
+        setTimeout(nextQuestion, 10 * 1000);
     }
 });
 
 
-// ANIMATIONS
-
+// ANIMATIONS - Uses anime.js library.
 
 anime({
     targets: '.main-container',
@@ -230,18 +236,36 @@ let choicesAnime = anime({
 
 // GAMEPLAY
 
-
+// Hide proper divs when the game first loads and display the opening image.
 $(document).ready(function () {
     $('li').hide();
     $('#result').hide();
     $('#time-span').hide();
+    $('#restart-button').hide();
+    $('#scores').hide();
     $('#image').append('<img id="start-image" src="assets/images/opening-page.png" alt="Mt Shucksan" style="position: relative; top: -120px; height: auto; width: 100%">');
 })
 
-
+// Start game and hide the start button when it is first clicked.
 $('#start-button').on('click', function() {
     $('#start-button').hide();
     $('#image').hide().text('');
+    pickAndPlayQuestion();
+});
+
+// Reset variables and hide proper divs to restart the game.
+$('#restart-button').on('click', function() {
+    $('#result').hide();
+    $('#restart-button').hide();
+    $('#scores').hide();
+    $('.choices').hide();
+    usedQuestions = [];
+    currentQuestion = '';
+    totalQuestions = 0;
+    correctAnswers = 0;
+    incorrectAnswers = 0;
+    unanswered = 0;
+    time = 15;
     pickAndPlayQuestion();
 });
 
