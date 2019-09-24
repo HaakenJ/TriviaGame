@@ -12,6 +12,17 @@ Ideas: Add animations with Anime.js
 
 
 
+TIMER:
+
+I start a timer from 30 seconds each time a question starts
+
+If the time reaches 0 seconds before an answer is selected, 
+    The result screen is shown telling the user they ran out of
+    time and shows the fun fact etc.
+
+If the user selects an answer, the timer is stopped.
+
+
 
 
 Website opens

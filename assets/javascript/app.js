@@ -51,6 +51,7 @@ let usedQuestions = [],
     correctAnswers = 0,
     incorrectAnswers = 0,
     unanswered = 0,
+    timerRunning = false,
     time = 30;
 
 
@@ -64,13 +65,38 @@ function chooseRanAnsSelctor () {
     return $('#answer-' + Math.floor((Math.random() * 4) + 1));
 }
 
-function timerCount () {
-    time--;
-    console.log('timer is running.')
-    $('#timer').text(time);
-    if (time === 0) {
+
+// function startTimer () {
+//     $('#time-span').show();
+//     $('#timer').text('30');
+//     console.log('starting the timer.');
+//     time = 30;
+//     if (!timerRunning) {
+//         timerRunning = true;
+//         timerId = setInterval(function() {
+//             if (time > 0) {
+//                 time--;
+//                 console.log('timer is running.')
+//                 $('#timer').text(time);
+//             } else {
+//                 timerRunning = false;
+//                 clearInterval(timerId);
+//                 $('li').hide();
+//                 $('#time-span').hide();
+//                 $('#question').hide();
+//                 $('#result').show().text('You ran out of time!');
+//                 $('#fun-fact').show().text(currentQuestion.funFact);
+//                 $('#image').text('').show().append(currentQuestion.image);
+//                 unanswered++;
+//                 setTimeout(nextQuestion, 7000);
+//             }
+//         }, 1000);
+//     }
+// }
+
+function questionTimer () {
+    timerId = setTimeout(() => {
         $('li').hide();
-        clearInterval(timer);
         $('#time-span').hide();
         $('#question').hide();
         $('#result').show().text('You ran out of time!');
@@ -78,21 +104,14 @@ function timerCount () {
         $('#image').text('').show().append(currentQuestion.image);
         unanswered++;
         setTimeout(nextQuestion, 7000);
-        clearInterval(timer);
-    }
-}
-
-function startTimer () {
-    $('#time-span').show();
-    $('#timer').text('30');
-    timer = setInterval(timerCount, 1000);
+    }, 10 * 1000)
 }
 
 function nextQuestion () {
     $('#result').hide();
     $('#fun-fact').hide();
     $('#image').hide().text('');
-    time = 30;
+    console.log('Here comes the next question');
     pickAndPlayQuestion();
 }
 
@@ -101,11 +120,13 @@ function getRandomQuestion (randomNum, obj) {
 }
 
 function pickAndPlayQuestion () {
+    console.log('Playing a question.');
     totalQuestions++;
     if (totalQuestions === 7) {
         return;
     }
-    startTimer();
+    questionTimer();
+    // startTimer();
     $("li").show();
     // Remove existing text from the .choices divs.
     $('.choices').text('');
@@ -144,7 +165,8 @@ function pickAndPlayQuestion () {
 
     // Check if the clicked answer was right or wrong and move to answer page.
     $(".choices").on('click', function() {
-        clearInterval(timer);
+        clearTimeout(timerId);
+        console.log('Interval stopped');
         if ($(this).text() === currentQuestion.answer) {
             $('li').hide();
             $('#time-span').hide();
@@ -153,6 +175,7 @@ function pickAndPlayQuestion () {
             $('#fun-fact').show().text(currentQuestion.funFact)
             $('#image').text('').show().append(currentQuestion.image);
             correctAnswers++;
+            console.log('# of correct ' + correctAnswers);
             setTimeout(nextQuestion, 7000);
         } else {
             $('li').hide();
@@ -162,6 +185,7 @@ function pickAndPlayQuestion () {
             $('#fun-fact').show().text(currentQuestion.funFact);
             $('#image').text('').show().append(currentQuestion.image);
             incorrectAnswers++;
+            console.log('# of incorrect ' + incorrectAnswers);
             setTimeout(nextQuestion, 7000);
         }
     })
