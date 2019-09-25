@@ -77,12 +77,10 @@ function chooseRanAnsSelctor () {
 // The actual timer for each question that will end the question.
 function timerForEachQuestion () {
     timerId = setTimeout(() => {
-        $('li').hide();
-        $('#time-span').hide();
-        $('#question').hide();
-        $('#result').show().text('You ran out of time!');
-        $('#fun-fact').show().text(currentQuestion.funFact);
-        $('#image').text('').show().append(currentQuestion.image);
+        showResultPage();
+        $('#result').text('You ran out of time!');
+        $('#fun-fact').text(currentQuestion.funFact);
+        $('#image').empty().append(currentQuestion.image);
         unanswered++;
         clearInterval(displayTimerId);
         setTimeout(nextQuestion, 10 * 1000);
@@ -100,12 +98,16 @@ function displayTimer () {
 
 // Hides divs and images, resets time, and starts a new question.
 function nextQuestion () {
-    $('#result').hide();
-    $('#fun-fact').hide();
-    $('#image').hide().text('');
-    console.log('Here comes the next question');
+    $('#result, #fun-fact, #image').hide();
+    $('#image').empty();
     time = 15;
     pickAndPlayQuestion();
+}
+
+// Hide and show proper divs for the result screen.
+function showResultPage () {
+    $('li, #time-span, #question').hide();
+    $('#result, #fun-fact, #image').show();
 }
 
 /* The function that will pick questions, start timers, hide and show the 
@@ -114,19 +116,17 @@ function nextQuestion () {
 function pickAndPlayQuestion () {
     totalQuestions++;
     $('#timer').text('15');
-    console.log('Total questions: ', totalQuestions);
+
     // End the game and display the final screen and restart button.
     if (totalQuestions === 7) {
-        $('li').hide();
-        $('#fun-fact').hide();
-        $('#image').hide();
-        $('#time-span').hide();
-        $('#result').show().text('All done, here\s how you did!');
+        $('li, #fun-fact, #image, #time-span').hide();
+        $('#result, #scores, #restart-button').show();
+        $('#result').text('All done, here\s how you did!');
+
         $('#scores').empty();
-        $('#scores').show().append('Correct Answers: ', correctAnswers, '<br>');
+        $('#scores').append('Correct Answers: ', correctAnswers, '<br>');
         $('#scores').append('Incorrect Answers: ', incorrectAnswers, '<br>');
         $('#scores').append('Unanswered: ', unanswered);
-        $('#restart-button').show();
         return;
     }
 
@@ -135,10 +135,8 @@ function pickAndPlayQuestion () {
     displayTimer();
     
     // Show and empty proper divs.
-    $("li").show();
-    $('#question').show();
-    $('.choices').text('');
-    $('#question').text('');
+    $("li, #question").show();
+    $('.choices, #question').empty();
 
     // Choose and assign a random question object to use this round.
     currentQuestion = getRandomQuestion(randomQuesNumber(), gameQuestions);
@@ -170,32 +168,26 @@ function pickAndPlayQuestion () {
     choicesAnime.play(); 
 }
 
+
+
 /* When an answer is clicked, stop the timers, check if the answer is correct
     or not, and display the results screen. */
 $(".choices").on('click', function() {
     clearTimeout(timerId);
     clearInterval(displayTimerId);
-    console.log('Interval stopped');
-    console.log('Timer ID', timerId);
     if ($(this).text() === currentQuestion.answer) {
-        $('li').hide();
-        $('#time-span').hide();
-        $('#question').hide();
-        $('#result').show().text('That\'s right!');
-        $('#fun-fact').show().text(currentQuestion.funFact)
-        $('#image').text('').show().append(currentQuestion.image);
+        showResultPage();
+        $('#result').text('That\'s right!');
+        $('#fun-fact').text(currentQuestion.funFact);
+        $('#image').empty().append(currentQuestion.image);
         correctAnswers++;
-        console.log('# of correct ' + correctAnswers);
         setTimeout(nextQuestion, 10 * 1000);
     } else {
-        $('li').hide();
-        $('#time-span').hide();
-        $('#question').hide();
-        $('#result').show().text('Nope, wrong answer!');
-        $('#fun-fact').show().text(currentQuestion.funFact);
-        $('#image').text('').show().append(currentQuestion.image);
+        showResultPage();
+        $('#result').text('Nope, wrong answer!');
+        $('#fun-fact').text(currentQuestion.funFact);
+        $('#image').empty().append(currentQuestion.image);
         incorrectAnswers++;
-        console.log('# of incorrect ' + incorrectAnswers);
         setTimeout(nextQuestion, 10 * 1000);
     }
 });
@@ -238,27 +230,20 @@ let choicesAnime = anime({
 
 // Hide proper divs when the game first loads and display the opening image.
 $(document).ready(function () {
-    $('li').hide();
-    $('#result').hide();
-    $('#time-span').hide();
-    $('#restart-button').hide();
-    $('#scores').hide();
+    $('li, #result, #time-span, #restart-button, #scores').hide();
     $('#image').append('<img id="start-image" src="assets/images/opening-page.png" alt="Mt Shucksan" style="position: relative; top: -120px; height: auto; width: 100%">');
 })
 
 // Start game and hide the start button when it is first clicked.
 $('#start-button').on('click', function() {
-    $('#start-button').hide();
-    $('#image').hide().text('');
+    $('#start-button, #image').hide();
+    $('#image').empty();
     pickAndPlayQuestion();
 });
 
 // Reset variables and hide proper divs to restart the game.
 $('#restart-button').on('click', function() {
-    $('#result').hide();
-    $('#restart-button').hide();
-    $('#scores').hide();
-    $('.choices').hide();
+    $('#result, #restart-button, #scores, .choices').hide();
     usedQuestions = [];
     currentQuestion = '';
     totalQuestions = 0;
