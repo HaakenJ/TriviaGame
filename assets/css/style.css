@@ -11,6 +11,7 @@
 body {
     background-image: url("../images/background.png");
     overflow-x: hidden;
+    font-family: 'Merriweather Sans', sans-serif;
 }
 
 .main-container {
@@ -27,6 +28,7 @@ body {
     top: 1000px;
     margin-top: 30px;
     font-size: 5em;
+    font-family: 'Merriweather', serif;
     text-shadow: 2px 2px 8px #333;
 }
 
